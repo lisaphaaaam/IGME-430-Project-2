@@ -1,12 +1,11 @@
 /* the job application information */
-// TODO: needs to change domo details to job, ensure it can be exported correctly
 
 const mongoose = require('mongoose');
 const _ = require('underscore');
 
 const setName = (name) => _.escape(name).trim();
 
-const DomoSchema = new mongoose.Schema({
+const JobSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -35,6 +34,10 @@ const DomoSchema = new mongoose.Schema({
     type: String,
     enum: ["waiting", "rejected", "interview", "offer", "accepted"],
   },
+  notes: {
+    type: String,
+    default: '',
+  },
 
   owner: {
     type: mongoose.Schema.ObjectId,
@@ -47,7 +50,7 @@ const DomoSchema = new mongoose.Schema({
   },
 });
 
-DomoSchema.statics.toAPI = (doc) => ({
+JobSchema.statics.toAPI = (doc) => ({
   title: doc.title,
   company: doc.company,
   pay: doc.pay,
@@ -57,5 +60,5 @@ DomoSchema.statics.toAPI = (doc) => ({
 });
 
 
-const DomoModel = mongoose.model('Domo', DomoSchema);
-module.exports = DomoModel;
+const JobModel = mongoose.model('Job', JobSchema);
+module.exports = JobModel;

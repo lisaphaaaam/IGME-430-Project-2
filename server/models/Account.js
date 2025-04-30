@@ -1,4 +1,3 @@
-// TODO: change domo information
 
 /* This file defines our schema and model interface for the account data.
 
@@ -35,6 +34,14 @@ const AccountSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  premium: {
+    type: Boolean,
+    default: false,
+  },
+  count: {
+    type: Number,
+    default: 0,
+  },
   createdDate: {
     type: Date,
     default: Date.now,
@@ -45,6 +52,7 @@ const AccountSchema = new mongoose.Schema({
 AccountSchema.statics.toAPI = (doc) => ({
   username: doc.username,
   _id: doc._id,
+  count: doc.count,
 });
 
 // Helper function to hash a password

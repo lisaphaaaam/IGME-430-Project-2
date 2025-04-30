@@ -9,16 +9,41 @@ body {
 
 #logo {
     height: 40px;
-    width: 40;
+    width: 40px;
     padding-top: 5px;
     float: left;
     border-radius: 8px;
 }
 
 nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 25px;
     width: 100%;
     height: 50px;
-    background-color: #55acee;
+    background-color: #fb9bf0;
+    box-sizing: border-box;
+}
+
+.logo-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#title {
+    font-size: 1.6em;
+    color: white;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.navBtns,
+#logoutLink {
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
 }
 
 nav:nth-child(1) {
@@ -28,10 +53,9 @@ nav:nth-child(1) {
 .navlink {
     padding: 5px;
     padding-top: 12px;
-    padding-left: 20px;
+    padding-right: 40px;
     color: white;
     font-size: 1.3em;
-    float: left;
 }
 
 .navlink a,
@@ -43,89 +67,131 @@ nav:nth-child(1) {
     text-decoration: none;
     padding: 5px;
     border-radius: 4px;
-    background-color: #55acee;
+    background-color: #fb9bf0;
     transition: background-color 0.4s ease;
 }
 
 .navlink a:hover {
     transition: background-color 0.8s ease;
-    background-color: #66bdff;
+    background-color: #f5b4ed;
 }
 
-.domoForm {
+/* login page styling */
+.loginContainer,
+.signupContainer {
+    background-color: #ffc9f9;
+    border-radius: 20px;
+    padding: 40px 20px;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formLogo {
+    display: block;
+    margin: 0 auto 20px auto;
+    height: 100px;
+    width: 100px;
+    border-radius: 8px;
+}
+
+.loginForm,
+.signupForm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.loginForm input[type="text"],
+.loginForm input[type="password"],
+.signupForm input[type="text"],
+.signupForm input[type="password"],
+.signupForm input[type="password"] {
+    font-size: 1.2em;
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 3px 3px 0 black;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+}
+
+.contentWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    min-height: 80vh;
+    gap: 80px;
+}
+
+/* add a job app pop up styling */
+.jobForm {
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding: 20px;
     width: 400px;
     margin: 0 auto;
-    background-color: #66bdff;
+    background-color: #fb9bf0;
+    border-color: #e741d3;
     border-radius: 8px;
 }
 
-.domoForm label {
+.jobForm label {
     display: inline-block;
     width: 75px;
     margin-left: 10px;
     font-size: 1.2em;
-    float: left;
-    color: white;
-}
+    color: rgb(77, 77, 77);}
 
-.domoForm input[type=text] {
+.jobForm input[type=text] {
     float: left;
 }
 
-.makeDomoSubmit {
+/* job form dropdown styling */
+.formRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+}
+
+.formRow select {
+    flex: 1;
+    padding: 4px;
+    border-radius: 6px;
+    font-size: 1em;
+}
+
+/* job app submit button */
+.makeJobSubmit {
     transition: background-color 0.4s ease;
     display: inline;
-    width: 90px;
-    background-color: #55acee;
+    width: 80px;
+    height: 30px;
+    background-color: #fb9bf0;
+
     border-radius: 2px;
     color: white;
     text-decoration: none;
 }
 
-.makeDomoSubmit:link,
-.makeDomoSubmit:visited,
-.makeDomoSubmit:hover,
-.makeDomoSubmit:active {
+.makeJobSubmit:link,
+.makeJobSubmit:visited,
+.makeJobSubmit:hover,
+.makeJobSubmit:active {
     color: white;
 }
 
-.domoList {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    padding: 20px;
-    justify-items: center;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-
-.makeDomoSubmit:hover {
+.makeJobSubmit:hover {
     transition: background-color 0.4s ease;
-    background-color: #338acc;
-}
-
-.mainForm {
-    height: 300px;
-    width: 350px;
-    padding-top: 200px;
-    font-size: 1.2em;
-}
-
-.mainForm h3 {
-    text-align: center;
-}
-
-.mainForm label {
-    display: inline-block;
-    width: 100px;
-    margin-right: 10px;
-    text-align: right;
-    font-size: 1.2em;
+    background-color: #d584cc;
 }
 
 .formSubmit {
@@ -136,9 +202,8 @@ nav:nth-child(1) {
     margin-top: 14px;
     font-size: 1.2em;
     width: 100px;
-    background-color: #55acee;
+    background-color: #fb9bf0;
     border-radius: 2px;
-    border-color: #66acee;
     padding: 3px 0px;
     color: white;
     text-decoration: none;
@@ -153,7 +218,7 @@ nav:nth-child(1) {
 
 .formSubmit:hover {
     transition: background-color 0.4s ease;
-    background-color: #338acc;
+    background-color: #d634c3;
 }
 
 #user,
@@ -169,34 +234,25 @@ nav:nth-child(1) {
 #pass:focus,
 #pass2:focus {
     outline: none;
-    box-shadow: 0px 0px 1px 1px #55acee;
+    box-shadow: 0px 0px 1px 1px #fb9bf0;
 }
 
 .hidden {
     display: none;
 }
 
-#domoMessage {
-    top: 250px;
+#jobMessage {
+    left: 42%;
     width: 250px;
     height: 650px;
     position: absolute;
-    z-index: 200;
-    right: 0px;
+    text-align: center;
     overflow: hidden;
 }
 
-#domoMessage h3 {
+#jobMessage h3 {
     width: 200px;
-    position: absolute;
-    top: 0px;
-    left: 20px;
-}
-
-#speech {
-    height: 120px;
-    width: 250px;
-    z-index: 300;
+    margin: 0 auto;
 }
 
 #errorMessage {
@@ -206,46 +262,92 @@ nav:nth-child(1) {
     font-style: italic;
 }
 
-#domos {
-    width: 85%;
-    min-width: 400px;
-    border: 2px solid red;
-    border-radius: 4px;
+.jobList {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 20px;
+    max-width: 1000px;
     margin: 0 auto;
-    margin-top: 100px;
 }
 
-.domo {
-    justify-content: center;
-    width: 95%;
-    border: 2px solid #55acee;
+#jobs {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    min-width: 400px;
     border-radius: 4px;
-    background-color: #55acee;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.job {
+    color: rgb(77, 77, 77);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 4px;
+    background-color: #fb9bf0;
     padding: 10px;
-    min-height: 60px;
     overflow: hidden;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
-.domo:hover {
+.job h3 {
+    margin: 4px 0;
+    font-size: 1em;
+}
+
+.jobHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.jobMain {
+    margin-right: 140px;
+    padding-left: 5px;
+}
+
+.jobTitle,
+.jobCompany {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+/* job app status styling */
+.statusWrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.statusSelect {
+    width: 150px;
+    font-size: 1em;
+    border-radius: 4px;
+}
+
+.job:hover {
     transition: border-color 0.2s ease-out;
     border-color: rgba(255, 255, 255, 0.8);
     transition: background-color 2.6s ease-out;
-    background-color: #66bfff;
+    background-color: #ffc5f8;
 }
 
-img.domoFace {
-    margin-left: 25px;
-    margin-right: 10px;
-    height: 50px;
-    width: 50px;
-    border-radius: 4px;
-    margin-top: 10px;
-    float: left;
+.emptyJobWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    width: 100%;
 }
 
-h3.emptyDomo {
+/* no job apps text */
+h3.emptyJob {
     width: 400px;
     font-size: 1.5em;
     margin: 0 auto;
@@ -253,53 +355,113 @@ h3.emptyDomo {
     margin-top: 18px;
 }
 
-h3.domoName {
-    float: left;
-    width: 200px;
-    font-weight: bold;
-    padding-left: 65px;
-    font-size: 1.5em;
-}
-
-h3.domoAge {
-    float: right;
-    text-align: left;
-    width: 100px;
-    font-weight: bold;
-    padding-right: 40px;
-    font-size: 1.5em;
-}
-
-.domo:first-child {
-    margin-top: 10px;
-}
-
-.domo:last-child {
-    margin-bottom: 10px;
-}
-
-.contentWrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
-    gap: 20px;
-}
-
+/* ads in login */
 #ad-ph,
 .ad {
-    width: 400px;
+    width: 450px;
     height: auto;
 }
 
-#formArea {
-    min-width: 350px;
-    width: 400px;
+/* notes section*/
+.jobNotes textarea {
+    resize: none;
 }
 
-.formLogo {
-    display: block;
-    margin: 0 auto 20px auto;
-    height: 60px;
+/* toggle premium button styling */
+.switch {
+    position: relative;
+    display: inline-block;
     width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: rgb(142, 225, 142);
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px rgb(142, 225, 142);
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* job app top margin styling */
+.topControls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.topControls h2 {
+    margin: 0;
+}
+
+.topControls .ad {
+    height: 150px;
+    width: 750px;
+    object-fit: cover;
     border-radius: 8px;
+}
+
+.topControls label {
+    font-size: 1em;
+}
+
+.premium-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+footer .ad {
+    height: 150px;
+    width: 1400px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
 }

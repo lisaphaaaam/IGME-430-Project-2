@@ -1,7 +1,7 @@
 {
-  "name": "domomaker",
+  "name": "jobfolder",
   "version": "1.0.0",
-  "description": "A Simple Login Example using Node.js, Mongo and Redis",
+  "description": "An application to hold job applications using Node.js, Mongo and Redis",
   "main": "./server/app.js",
   "scripts": {
     "webpack": "webpack",

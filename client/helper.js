@@ -1,5 +1,4 @@
 /* displays if there is an error */
-// TODO: change domo information - how the errors are displayed should be different
 
 /* Takes in an error message. Sets the error message up in html, and
    displays it to the user. Will be hidden by other events that could
@@ -7,7 +6,7 @@
 */
 const handleError = (message) => {
     document.getElementById('errorMessage').textContent = message;
-    document.getElementById('domoMessage').classList.remove('hidden');
+    document.getElementById('jobMessage').classList.remove('hidden');
 };
 
 /* Sends post requests to the server using fetch. Will look for various
@@ -23,7 +22,7 @@ const sendPost = async (url, data, handler) => {
     });
 
     const result = await response.json();
-    document.getElementById('domoMessage').classList.add('hidden');
+    document.getElementById('jobMessage').classList.add('hidden');
 
     if (result.redirect) {
         window.location = result.redirect;
@@ -39,7 +38,7 @@ const sendPost = async (url, data, handler) => {
 };
 
 const hideError = () => {
-    document.getElementById('domoMessage').classList.add('hidden');
+    document.getElementById('jobMessage').classList.add('hidden');
 };
 
 module.exports = {

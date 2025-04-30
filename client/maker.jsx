@@ -1,12 +1,11 @@
 /* create the job application in html */
-// TODO: change domo names, fix the html for making the app
 
 const helper = require('./helper.js');
 const React = require('react');
 const { useState, useEffect } = React;
 const { createRoot } = require('react-dom/client');
 
-const handleDomo = (e, onDomoAdded) => {
+const handleJob = (e, onJobAdded) => {
     e.preventDefault();
     helper.hideError();
 
@@ -22,18 +21,18 @@ const handleDomo = (e, onDomoAdded) => {
         return false;
     }
 
-    helper.sendPost(e.target.action, { title, company, pay, type, applied, status }, onDomoAdded);
+    helper.sendPost(e.target.action, { title, company, pay, type, applied, status }, onJobAdded);
     return false;
 }
 
-const DomoForm = (props) => {
+const JobForm = (props) => {
     return (
-        <form id="domoForm"
-            onSubmit={(e) => handleDomo(e, props.triggerReload)}
-            name="domoForm"
+        <form id="jobForm"
+            onSubmit={(e) => handleJob(e, props.triggerReload)}
+            name="jobForm"
             action="/maker"
             method="POST"
-            className="domoForm"
+            className="jobForm"
         >
             <input id="jobTitle" type="text" name="title" placeholder="Job Title" />
 
@@ -41,37 +40,45 @@ const DomoForm = (props) => {
 
             <input id="pay" type="number" min="0" name="pay" placeholder="Pay" />
 
-            <label htmlFor="type">Job Type: </label>
-            <select name="type" id="jobType"> 
-                <option value="full-time">Full-time</option>
-                <option value="part-time">Part-time</option>
-                <option value="internship">Internship</option>
-                <option value="volunteer">Volunteer</option>
-            </select>
+            <div className="formRow">
+                <label htmlFor="type">Job Type: </label>
+                <select name="type" id="jobType">
+                    <option value="full-time">Full-time</option>
+                    <option value="part-time">Part-time</option>
+                    <option value="internship">Internship</option>
+                    <option value="volunteer">Volunteer</option>
+                </select>
+            </div>
 
-            <label htmlFor="applied">Applied?: </label>
-            <select name="applied" id="applied">
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select>
+            <div className="formRow">
 
-            <label htmlFor="status">Status: </label>
-            <select name="status" id="status">
-                <option value="waiting">Waiting</option>
-                <option value="rejected">Rejected</option>
-                <option value="interview">Interview</option>
-                <option value="offer">Offer</option>
-                <option value="accepted">Accepted</option>
-            </select>
+                <label htmlFor="applied">Applied?: </label>
+                <select name="applied" id="applied">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
 
-            <input className="makeDomoSubmit" type="submit" value="Make Domo" />
+            <div className="formRow">
+
+                <label htmlFor="status">Status: </label>
+                <select name="status" id="status">
+                    <option value="waiting">Waiting</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="interview">Interview</option>
+                    <option value="offer">Offer</option>
+                    <option value="accepted">Accepted</option>
+                </select>
+            </div>
+
+            <input className="makeJobSubmit" type="submit" value="Make Job" />
         </form>
 
     );
 };
 
-const deleteDomo = async (id, onDeleted) => {
-    const response = await fetch(`/deleteDomo`, {
+const deleteJob = async (id, onDeleted) => {
+    const response = await fetch(`/deleteJob`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -88,76 +95,314 @@ const deleteDomo = async (id, onDeleted) => {
     }
 };
 
-const DomoList = (props) => {
-    const [domos, setDomos] = useState(props.domos);
+
+const JobList = (props) => {
+    const [jobs, setJobs] = useState([]);
 
     const triggerReload = () => {
-        if (typeof props.reloadDomos === 'function') {
-            props.reloadDomos();
+        if (typeof props.reloadJobs === 'function') {
+            props.reloadJobs();
         } else {
-            setDomos([]);
+            setJobs([]);
         }
     };
 
     const deleteAndUpdate = async (id) => {
-        await deleteDomo(id, () => {
-            setDomos(prev => prev.filter(d => d._id !== id));
+        await deleteJob(id, () => {
+            setJobs(prev => prev.filter(d => d._id !== id));
         });
     };
 
-    useEffect(() => {
-        const loadDomosFromServer = async () => {
-            const response = await fetch('/getDomos');
-            const data = await response.json();
-            setDomos(data.domos);
-        };
-        loadDomosFromServer();
-    }, [props.reloadDomos]);
+    const handleStatusChange = async (id, newStatus) => {
+        try {
+            const response = await fetch('/updateStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id, status: newStatus }),
+            });
 
-    if (domos.length === 0) {
+            const result = await response.json();
+
+            if (result.error) {
+                helper.handleError(result.error);
+            } else {
+                setJobs(prevJobs =>
+                    prevJobs.map(job =>
+                        job._id === id ? { ...job, status: newStatus } : job
+                    )
+                );
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const handleNotes = async (id, newNotes) => {
+        try {
+            const response = await fetch('/updateNotes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id, notes: newNotes }),
+            });
+
+            const result = await response.json();
+
+            if (result.error) {
+                helper.handleError(result.error);
+            } else {
+                setJobs(prevJobs =>
+                    prevJobs.map(job =>
+                        job._id === id ? { ...job, notes: newNotes } : job
+                    )
+                );
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    useEffect(() => {
+        const loadJobsFromServer = async () => {
+            const response = await fetch('/getJobs');
+            const data = await response.json();
+            setJobs(data.jobs);
+        };
+        loadJobsFromServer();
+    }, [props.reloadJobs]);
+
+    if (jobs.length === 0) {
         return (
-            <div className="domoList">
-                <h3 className="emptyDomo">No Domos Yet!</h3>
+            <div id="jobs">
+                {jobs.length === 0 ? (
+                    <div className="emptyJobWrapper">
+                        <h3 className="emptyJob">No Job Apps Yet!</h3>
+                    </div>
+                ) : (
+                    <div className="jobList">
+                        {/* render jobs here */}
+                    </div>
+                )}
             </div>
         );
     }
 
-    const domoNodes = domos.map(domo => {
+    const sortedJobs = [...jobs].sort((a, b) => {
+        const payA = Number(a.pay);
+        const payB = Number(b.pay);
+
+        if (props.sortBy === 'low-high') {
+            return payA - payB;
+        } else {
+            return payB - payA;
+        }
+    });
+
+    const jobNodes = sortedJobs.map(job => {
         return (
-            <div key={domo._id} className="domo">
-                <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
-                <h3 className="jobTitle">Title: {domo.title}</h3>
-                <h3 className="jobCompany">Company: {domo.company}</h3>
-                <h3 className="jobPay">Pay: {domo.pay}</h3>
-                <h3 className="jobType">Type: {domo.type}</h3>
-                <h3 className="jobApplied">Applied: {domo.applied}</h3>
-                <h3 className="jobStatus">Status: {domo.status}</h3>
-                <button onClick={() => deleteAndUpdate(domo._id)}>Delete</button>
+            <div key={job._id} className="job">
+                <div className='jobHeader'>
+                    <img src="/assets/img/job.png" alt="job" className="jobApp" style={{ width: '25%', height: 'auto' }} />
+
+                    <div className='jobMain'>
+                        <h3 className="jobTitle">{job.title}</h3>
+                        <h3 className="jobCompany">{job.company}</h3>
+                    </div>
+                </div>
+
+                <h3 className="jobPay">Hourly Pay: {job.pay}</h3>
+                <h3 className="jobType">Type: {job.type}</h3>
+                <h3 className="jobApplied">Applied: {job.applied}</h3>
+                <div className='statusWrapper'>
+                    <h3 className="jobStatus">Status: </h3>
+                    <select
+                        className='statusSelect'
+                        value={job.status}
+                        onChange={(e) => handleStatusChange(job._id, e.target.value)}
+                    >
+                        <option value="waiting">Waiting</option>
+                        <option value="rejected">Rejected</option>
+                        <option value="interview">Interview</option>
+                        <option value="offer">Offer</option>
+                        <option value="accepted">Accepted</option>
+                    </select>
+                </div>
+
+                {props.premium && (
+                    <div className="jobNotes">
+                        <label htmlFor={`notes-${job._id}`}>Notes:</label>
+                        <textarea
+                            id={`notes-${job._id}`}
+                            defaultValue={job.notes || ''}
+                            onChange={(e) => handleNotes(job._id, e.target.value)}
+                            placeholder="Enter your notes here!"
+                        />
+                    </div>
+                )}
+
+                <button onClick={() => deleteAndUpdate(job._id)}
+                    style={{
+                        marginTop: '10px',
+                        width: '80px',
+                        backgroundColor: '#dc3545',
+                        color: 'white',
+                        border: 'none',
+                        padding: '8px 16px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                    }}>
+                    Delete
+                </button>
             </div>
         );
     });
-    
+
     return (
-        <div className="domoList">
-            {domoNodes}
+        <div className="jobList">
+            {jobNodes}
         </div>
     );
 };
 
 const App = () => {
-    const [reloadDomos, setReloadDomos] = useState(false);
+    const [reloadJobs, setReloadJobs] = useState(false);
+    const [showForm, setShowForm] = useState(false);
+
+    const [account, setAccount] = useState({ username: '', count: 0 });
+
+    const [premium, setPremium] = useState(false);
+
+    const [sortBy, setSortBy] = useState('high-low');
+
+    const fetchAccountInfo = async () => {
+        const response = await fetch('/accountInfo');
+        const data = await response.json();
+        // console.log("Fetched account info:", data);
+        setAccount(data);
+    };
+
+    useEffect(() => {
+        fetchAccountInfo();
+    }, []);
 
     return (
         <div>
-            <div id="makeDomo">
-                <DomoForm triggerReload={() => setReloadDomos(!reloadDomos)} />
+
+            <div className="topControls">
+                <h2>Username: {account.username}</h2>
+
+                {!premium && (
+                    <img className="ad" src="/assets/img/placeholder.svg" alt="ad placeholder" />
+                )}
+
+                <div className="premium-toggle">
+                    <span>Premium</span>
+                    <label className="switch">
+                        <input type="checkbox"
+                            checked={premium}
+                            onChange={() => setPremium(!premium)}
+                        />
+                        <span className="slider round"></span>
+                    </label>
+                </div>
+
+                <label htmlFor="sortBy">
+                    Sort Pay by:
+                    <select
+                        name="sortBy"
+                        id="sortBy"
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value)}
+                    >
+                        <option value="high-low">High-Low</option>
+                        <option value="low-high">Low-High</option>
+                    </select>
+                </label>
+
             </div>
-            <div id="domos">
-                <DomoList domos={[]} reloadDomos={reloadDomos} />
+
+            <div id="jobs">
+                <JobList reloadJobs={reloadJobs} sortBy={sortBy} premium={premium} />
             </div>
-        </div>
+
+            {showForm && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100vw',
+                    height: '100vh',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 999,
+                }}>
+                    <div style={{
+                        backgroundColor: 'white',
+                        justifyContent: 'center',
+                        textAlign: 'center',
+                        padding: '30px',
+                        borderRadius: '10px',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                        maxWidth: '500px',
+                        width: '90%',
+                    }}>
+                        <JobForm triggerReload={() => {
+                            setReloadJobs(!reloadJobs);
+                            setShowForm(false);
+                        }} />
+                        <button onClick={() => setShowForm(false)} style={{
+                            marginTop: '10px',
+                            backgroundColor: '#dc3545',
+                            color: 'white',
+                            border: 'none',
+                            padding: '8px 16px',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                        }}>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            <footer style={{ marginTop: '2rem', textAlign: 'center', position: 'sticky' }}>
+                {!showForm && (
+                    < button
+                        onClick={() => setShowForm(true)}
+                        style={{
+                            position: 'fixed',
+                            bottom: '20px',
+                            right: '20px',
+                            width: '60px',
+                            height: '60px',
+                            borderRadius: '50%',
+                            backgroundColor: '#fb9bf0',
+                            color: 'white',
+                            fontSize: '32px',
+                            border: 'none',
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+                            cursor: 'pointer',
+                            zIndex: 1000,
+                        }}
+                    >
+                        +
+                    </button>
+
+                )}
+
+                {!premium && (
+                    <img className="ad" src="/assets/img/placeholder.svg" alt="ad placeholder" />
+                )}
+            </footer>
+        </div >
     );
 };
+
 
 const init = () => {
     const root = createRoot(document.getElementById('app'));

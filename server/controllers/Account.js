@@ -1,4 +1,3 @@
-// TODO: change domo information
 
 const models = require('../models');
 
@@ -45,7 +44,7 @@ const signup = async (req, res) => {
 
   try {
     const hash = await Account.generateHash(pass);
-    const newAccount = new Account({ username, password: hash });
+    const newAccount = new Account({ username, password: hash, count: 0 });
     await newAccount.save();
     req.session.account = Account.toAPI(newAccount);
     return res.json({ redirect: '/maker' });
@@ -59,9 +58,22 @@ const signup = async (req, res) => {
   }
 };
 
+const accountInfo = async (req, res) => {
+  if (!req.session.account) {
+    return res.status(400).json({ error: 'No account data found in session' });
+  }
+  
+  return res.json({
+    username: req.session.account.username,
+    premium: req.session.account.premium,
+    count: req.session.account.count,
+  });
+};
+
 module.exports = {
   loginPage,
   login,
   logout,
   signup,
+  accountInfo,
 };

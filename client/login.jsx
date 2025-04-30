@@ -1,5 +1,3 @@
-// TODO: change domo information
-
 const helper = require('./helper.js');
 const React = require('react');
 const { createRoot } = require('react-dom/client');
@@ -45,43 +43,46 @@ const handleSignup = (e) => {
 
 const LoginWindow = (props) => {
     return (
-        <form id="loginForm"
-            name="loginForm"
-            onSubmit={handleLogin}
-            action="/login"
-            method="POST"
-            className="mainForm"
-        >
-            <img className="formLogo" src="/assets/img/favicon.png" alt="logo placeholder" />
+        <div className="loginContainer">
+            <img className="formLogo" src="/assets/img/logo.png" alt="logo placeholder" />
 
-            <label htmlFor="username">Username: </label>
-            <input id="user" type="text" name="username" placeholder="username" />
-            <label htmlFor="pass">Password: </label>
-            <input id="pass" type="password" name="pass" placeholder="password" />
-            <input className="formSubmit" type="submit" value="Sign in" />
-        </form>
+            <form
+                id="loginForm"
+                name="loginForm"
+                onSubmit={handleLogin}
+                action="/login"
+                method="POST"
+                className="loginForm"
+            >
+                <input id="user" type="text" name="username" placeholder="username" />
+                <input id="pass" type="password" name="pass" placeholder="password" />
+                <input className="formSubmit" type="submit" value="sign in" />
+            </form>
+        </div>
     );
 };
 
 const SignupWindow = (props) => {
     return (
-        <form id="signupForm"
-            name="signupForm"
-            onSubmit={handleSignup}
-            action="/signup"
-            method="POST"
-            className="mainForm"
-        >
-            <img className="formLogo" src="/assets/img/favicon.png" alt="logo placeholder" />
+        <div className="signupContainer">
+            <img className="formLogo" src="/assets/img/logo.png" alt="logo placeholder" />
 
-            <label htmlFor="username">Username: </label>
-            <input id="user" type="text" name="username" placeholder="username" />
-            <label htmlFor="pass">Password: </label>
-            <input id="pass" type="password" name="pass" placeholder="password" />
-            <label htmlFor="pass">Password: </label>
-            <input id="pass2" type="password" name="pass2" placeholder="retype password" />
-            <input className="formSubmit" type="submit" value="Sign up" />
-        </form>
+            <form id="signupForm"
+                name="signupForm"
+                onSubmit={handleSignup}
+                action="/signup"
+                method="POST"
+                className="signupForm"
+            >
+                <input id="user" type="text" name="username" placeholder="username" />
+
+                <input id="pass" type="password" name="pass" placeholder="password" />
+
+                <input id="pass2" type="password" name="pass2" placeholder="retype password" />
+
+                <input className="formSubmit" type="submit" value="sign up" />
+            </form>
+        </div>
     );
 }
 
